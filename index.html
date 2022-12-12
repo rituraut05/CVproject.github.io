@@ -17,7 +17,7 @@
     <meta name="theme-color" content="#ffffff">
 
     <!-- Social Stuff -->
-    <meta property="og:title" content="HiFiC - High-Fidelity Generative Image Compression">
+    <!-- <meta property="og:title" content="HiFiC - High-Fidelity Generative Image Compression">
     <meta property="og:description"
           content="We combine Generative Adversarial Networks with learned compression to obtain a state-of-the-art generative lossy compression system.">
     <meta property="og:image" content="http://hific.github.io/social/thumb.jpg">
@@ -26,7 +26,7 @@
     <meta name="twitter:description"
           content="We combine Generative Adversarial Networks with learned compression to obtain a state-of-the-art generative lossy compression system.">
     <meta name="twitter:image" content="http://hific.github.io/social/thumb.jpg">
-    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:card" content="summary_large_image"> -->
 
     <!-- Global site tag (gtag.js) - Google Analytics
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-169820266-1"></script>
@@ -44,17 +44,15 @@
             <h1>Image Compression Comparative Study</h1>
             <div class="container-sm">
                 <div class="row justify-content-md-center">
-                    <div class="col-sm-auto"><p>Ritu Raut</p></div>
-                    <div class="col-sm-auto"><p>Ajay Joshi</p></div>
+                    <div class="col-sm-auto"><h4>Ritu Raut</h4></div>
+                    <div class="col-sm-auto"><h4>Ajay Joshi</h4></div>
                 </div>
             </div>
         </div>
 
         <div class="container-md">
             <h2>About</h2>
-            <p>We combine Generative Adversarial Networks with learned compression to obtain a state-of-the-art generative lossy compression system.
-                In the paper, we investigate normalization layers, generator and discriminator architectures, training strategies, as well as perceptual losses.
-                In a user study, we show that our method is <strong>preferred to previous state-of-the-art approaches even if they use more than 2&times; the bitrate.</strong>
+            <p>We conducted a comprehensive study on the state of the art classical, machine learning, and deep learning based methods. We plan to evaluate the recent image compression methods based on diversified evaluation measures like compression ratio, the bit rate, and the peak signal-to-noise ratio, summarize their merits, and create hybrid approaches for specific design choices.
             </p>
         </div>
         <hr/>
@@ -192,11 +190,15 @@
             <div class="outlined">
                 <div class="caption">
                     <p>
-                        The following shows
-                        normalized scores for the user study, compared to perceptual metrics,
-                        where <strong>lower is better</strong> for all.
+                        The following shows scores for the studied algorithms, across each metric, 
+                        where higher is better for PSNR, SSIM, Compression ration and vice versa for runtime.
                     </p>
-                    <p>
+                    <p> We utilised the <a href="https://imagecompression.info/">Image Compression Benchmark</a> dataset for our evaluation.
+                        It consists of 15 images of high quality and size equal to 450MB.
+
+
+                    </p>
+                    <!-- <p>
                         <strong>HiFiC</strong> is our method.
                         <a href="http://papers.nips.cc/paper/8275-joint-autoregressive-and-hierarchical-priors-for-learned-image-compression.pdf">
                             M&amp;S</a> is the deep-learning based <em>Mean &amp; Scale Hyperprior</em>,
@@ -210,14 +212,13 @@
                         <a target="_blank" href="https://storage.googleapis.com/hific/userstudy/visualize.html?perPage=1">
                             images from the user study</a>,
                         and for learned methods we show the loss components.
-                    </p>
-                    <img src="img_other/userstudy.png" class="img-figure rounded mx-auto d-block">
+                    </p> -->
+                    <img src="images/result1.png" class="img-figure rounded mx-auto d-block">
+                    <img src="images/result2.png" class="img-figure rounded mx-auto d-block">
                     <p>
-                        The study shows that training with a GAN yields reconstructions that outperform BPG at practical
-                        bitrates, for high-resolution images.
-                        Our model at 0.237bpp is preferred to
-                        BPG even if BPG uses 2.1&times; the bitrate, and to
-                        MSE optimized models even if they use 1.7&times; the bitrate.
+                        The study shows that the state of the art learning based models are giving substantially higher compression ration than the classical algorithms.
+                        However, the classical algorithms are giving better PSNR and SSIM scores and are also faster than the learning based models. Under subjective evaluation,
+                        of the learning based models, the image quality seems to be better than the classical algorithms. This also shows PSNR and SSIM are not good indicator metrics of quality for generative methods, as they have lower scores even though the images are better.
                     </p>
                 </div>
             </div>
