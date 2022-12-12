@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Image Compression</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link rel="stylesheet" href="./style.css">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="mask-icon" href="safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Social Stuff -->
+    <meta property="og:title" content="HiFiC - High-Fidelity Generative Image Compression">
+    <meta property="og:description"
+          content="We combine Generative Adversarial Networks with learned compression to obtain a state-of-the-art generative lossy compression system.">
+    <meta property="og:image" content="http://hific.github.io/social/thumb.jpg">
+    <meta property="og:url" content="http://hific.github.io">
+    <meta name="twitter:title" content="HiFiC - High-Fidelity Generative Image Compression">
+    <meta name="twitter:description"
+          content="We combine Generative Adversarial Networks with learned compression to obtain a state-of-the-art generative lossy compression system.">
+    <meta name="twitter:image" content="http://hific.github.io/social/thumb.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Global site tag (gtag.js) - Google Analytics
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-169820266-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-169820266-1');
+    </script> -->
+</head>
+<body>
+<div class="page-container">
+    <div class="inner">
+        <div class="title">
+            <h1>Image Compression Comparative Study</h1>
+            <div class="container-sm">
+                <div class="row justify-content-md-center">
+                    <div class="col-sm-auto"><p>Ritu Raut</p></div>
+                    <div class="col-sm-auto"><p>Ajay Joshi</p></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-md">
+            <h2>About</h2>
+            <p>We combine Generative Adversarial Networks with learned compression to obtain a state-of-the-art generative lossy compression system.
+                In the paper, we investigate normalization layers, generator and discriminator architectures, training strategies, as well as perceptual losses.
+                In a user study, we show that our method is <strong>preferred to previous state-of-the-art approaches even if they use more than 2&times; the bitrate.</strong>
+            </p>
+        </div>
+        <hr/>
+
+        <div class="container-md">
+            <h2>Demo</h2>
+            <p class="tagline">Interactive Demo comparing different image compression methods</p>
+        </div>
+
+        <div class="comparison-slider-wrapper outlined">
+            <div class="image-selector">
+                <!-- JS-generated -->
+                <img class="thumb" src="https://storage.googleapis.com/hific/data/img/thumb_loading.png"/>
+                <img class="thumb" src="https://storage.googleapis.com/hific/data/img/thumb_loading.png"/>
+                <img class="thumb" src="https://storage.googleapis.com/hific/data/img/thumb_loading.png"/>
+                <img class="thumb" src="https://storage.googleapis.com/hific/data/img/thumb_loading.png"/>
+                <img class="thumb" src="https://storage.googleapis.com/hific/data/img/thumb_loading.png"/>
+                <img class="thumb" src="https://storage.googleapis.com/hific/data/img/thumb_loading.png"/>
+                <img class="thumb" src="https://storage.googleapis.com/hific/data/img/thumb_loading.png"/>
+            </div>
+            <div class="comparison-slider noselect">
+                <div id="loading-placeholder" class="tall"></div>
+                <div id="right-imgs" showing="loading">
+                    <!-- JS-generated img tag here -->
+                </div>
+                <div class="right-selector">
+                    <div class="btn-group-vertical" role="group">
+                    <!-- JS-generated -->
+                    <button type="button" class="btn btn-dark btn-block active">JPG</button>
+                    </div>
+                </div>
+                <div class="resize noselect" id="left-img">
+                    <!-- JS-generated img tag with id "left" here -->
+                </div>
+                <div class="left-selector">
+                    <div class="btn-group-vertical" role="group">
+                        <button type="button" class="btn btn-dark btn-block disabled-button highlighted" id="left-info-button" disabled>Original</button>
+                    </div>
+                </div>
+                <div class="img-info">
+                    <div class="btn-group-vertical" role="group">
+                        <button type="button" class="btn btn-sm btn-dark btn-block disabled-button" id="img-info-button" disabled>CLIC2020</button>
+                    </div>
+                </div>
+                <div class="divider"></div>
+                <div class="divider-info">Loading...</div>
+            </div>
+            <div>
+                <div class="row no-gutters">
+                    <div class="col-3">
+                        <div class="bpp-bytes-sel">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="bpp-bytes-radio" id="bytes" value="bytes" checked>
+                                <label class="form-check-label" for="bytes">
+                                    Kilobyte (kB)
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="bpp-bytes-radio" id="bpp" value="bpp">
+                                <label class="form-check-label" for="bpp">
+                                    Bits per pixel (bpp)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="image-selector">
+                            <!-- JS-generated -->
+                            <img class="thumb" src="https://storage.googleapis.com/hific/data/img/thumb_loading.png"/>
+                            <img class="thumb" src="https://storage.googleapis.com/hific/data/img/thumb_loading.png"/>
+                            <img class="thumb" src="https://storage.googleapis.com/hific/data/img/thumb_loading.png"/>
+                            <img class="thumb" src="https://storage.googleapis.com/hific/data/img/thumb_loading.png"/>
+                            <img class="thumb" src="https://storage.googleapis.com/hific/data/img/thumb_loading.png"/>
+                            <img class="thumb" src="https://storage.googleapis.com/hific/data/img/thumb_loading.png"/>
+                            <img class="thumb" src="https://storage.googleapis.com/hific/data/img/thumb_loading.png"/>
+                        </div>
+                    </div>
+                    <!-- <div class="col-3 full-res-wrapper">
+                        <a target="_blank" href="#" id="view-full-res" data-title="Shows the image 1:1, instead of fit to the window size.">
+                            View Full Res</a>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+        <!-- <div class="container-md centered-info paperthumbs">
+            <h2>Paper</h2>
+            <emph><p class="conference-name">NeurIPS 2020</p></emph>
+            <div class="container">
+                <div class="row no-gutters">
+                    <div class="col-sm"><a target="_blank" href="https://arxiv.org/abs/2006.09965">
+                        <img src="paper_thumbs/output-0.jpg" class="img-fluid"/></a></div>
+                    <div class="col-sm"><a target="_blank" href="https://arxiv.org/abs/2006.09965">
+                        <img src="paper_thumbs/output-1.jpg" class="img-fluid"/></a></div>
+                    <div class="col-sm"><a target="_blank" href="https://arxiv.org/abs/2006.09965">
+                        <img src="paper_thumbs/output-2.jpg" class="img-fluid"/></a></div>
+                    <div class="col-sm"><a target="_blank" href="https://arxiv.org/abs/2006.09965">
+                        <img src="paper_thumbs/output-3.jpg" class="img-fluid"/></a></div>
+                    <div class="col-sm"><a target="_blank" href="https://arxiv.org/abs/2006.09965">
+                        <img src="paper_thumbs/output-4.jpg" class="img-fluid"/></a></div>
+                    <div class="col-sm"><a target="_blank" href="https://arxiv.org/abs/2006.09965">
+                        <img src="paper_thumbs/output-5.jpg" class="img-fluid"/></a></div>
+                    <div class="col-sm"><a target="_blank" href="https://arxiv.org/abs/2006.09965">
+                        <img src="paper_thumbs/output-6.jpg" class="img-fluid"/></a></div>
+                    <div class="col-sm"><a target="_blank" href="https://arxiv.org/abs/2006.09965">
+                        <img src="paper_thumbs/output-7.jpg" class="img-fluid"/></a></div>
+                    <div class="col-sm"><a target="_blank" href="https://arxiv.org/abs/2006.09965">
+                        <img src="paper_thumbs/output-8.jpg" class="img-fluid"/></a></div>
+                </div>
+            </div>
+            <p>
+                <a href="https://arxiv.org/abs/2006.09965">
+                    PDF including supplementary material available on arXiv</a>
+            </p>
+            <h4>Visual Supplementary</h4>
+            <p>The PDF on arxiv includes the supplementary materials with more information.
+            </p>
+            <p><a target="_blank" href="https://storage.googleapis.com/hific/data/appendixb/appendixb.pdf">
+                Additional visual results are hosted as a PDF here.</a></p>
+            <h4>All Evaluation Images</h4>
+            <div class="eval-imgs">
+                <a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/kodak/kodim10.jpg" class="eval-imgs-first"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/clic2020/0a0f6e31897ad27cc6e0dacce455634c.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/div2k/0807.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/kodak/kodim13.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/div2k/0803.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/div2k/0819.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/clic2020/04f230a6e106c3c74be6105787ed226e.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/div2k/0802.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/kodak/kodim14.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/kodak/kodim01.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/clic2020/00b64869422e0011ff5bb492e56042cc.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/div2k/0810.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/clic2020/01443654fdc57490d5c2d8b0fd9e065b.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/div2k/0813.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/div2k/0812.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/clic2020/01d8472427bf120a4574ee3dbb3f1234.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/div2k/0806.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/clic2020/0824bfaef8a290439690f35b7602d682.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/kodak/kodim07.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/clic2020/0895f500d26929e69910169a8a396050.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/clic2020/09977e7621465cca10e71993a7f3632c.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/clic2020/04eddb6adca47bb7caa66cf0f70a842d.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/kodak/kodim04.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/kodak/kodim17.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/clic2020/08eba944d75efaf0bf3390e68c8d03b0.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/div2k/0808.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/clic2020/055829c676c9e6f3ba6b502583d7018d.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/kodak/kodim06.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/div2k/0817.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/kodak/kodim08.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/kodak/kodim16.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/clic2020/0ae784e3c3fad9064cda2753c0782305.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/clic2020/08083126ffe2eaffe89aa1840b508db7.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/kodak/kodim19.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/kodak/kodim18.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/div2k/0809.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/kodak/kodim11.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/div2k/0801.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/div2k/0811.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/div2k/0820.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/clic2020/091257d3b658024d9921799c583454c5.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/clic2020/02c3cf767c6845b3ec9a7b102d3b02fe.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/clic2020/00ce72ef820369df798001e9a28bf34f.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/kodak/kodim09.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/div2k/0818.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/div2k/0815.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/clic2020/06930eb49786d4ffdb886a19b999e18a.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/kodak/kodim03.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/div2k/0804.jpg"/></a><a target="_blank" href="https://hific.github.io/raw/index.html"><img src="dataset_thumbs/clic2020/01acd87d2ed16037467432a87863113d.jpg"/></a>
+            </div>
+            <p>We evaluate our method on CLIC2020, DIV2K, and Kodak.</p>
+            <p><a target="_blank" href="raw/index.html">
+                Reconstructions of HiFiC on all these datasets can be found here.</a></p>
+        </div> -->
+        <hr/>
+        <div class="container-md">
+        <h2>Code</h2>
+        <p>Our implementation of these algorithm to evaluate them, and more details are available as part of the Image Compression repo at
+            <a target="_blank" href="https://github.com/cs15b047/Image-Compression">
+                Image-Compression</a>. Explore our model implementations on your own images using the instructions given in the above link.</p>
+        <hr/>
+            <h2>Results and Analysis</h2>
+            <div class="outlined">
+                <div class="caption">
+                    <p>
+                        The following shows
+                        normalized scores for the user study, compared to perceptual metrics,
+                        where <strong>lower is better</strong> for all.
+                    </p>
+                    <p>
+                        <strong>HiFiC</strong> is our method.
+                        <a href="http://papers.nips.cc/paper/8275-joint-autoregressive-and-hierarchical-priors-for-learned-image-compression.pdf">
+                            M&amp;S</a> is the deep-learning based <em>Mean &amp; Scale Hyperprior</em>,
+                        from Minnen et al.,
+                        optimized for mean squared error.
+                        <a href="https://en.wikipedia.org/wiki/Better_Portable_Graphics">BPG</a> is a non-learned codec based on H.265 that achieves
+                        very high PSNR.
+                        <strong>No GAN</strong> is our baseline, using the same architecture and distortion
+                        as HiFiC, but no GAN.
+                        Below each method, we show <em>average</em> bits per pixel (bpp) on the
+                        <a target="_blank" href="https://storage.googleapis.com/hific/userstudy/visualize.html?perPage=1">
+                            images from the user study</a>,
+                        and for learned methods we show the loss components.
+                    </p>
+                    <img src="img_other/userstudy.png" class="img-figure rounded mx-auto d-block">
+                    <p>
+                        The study shows that training with a GAN yields reconstructions that outperform BPG at practical
+                        bitrates, for high-resolution images.
+                        Our model at 0.237bpp is preferred to
+                        BPG even if BPG uses 2.1&times; the bitrate, and to
+                        MSE optimized models even if they use 1.7&times; the bitrate.
+                    </p>
+                </div>
+            </div>
+            <hr/>
+            
+            <hr/>
+        </div>
+    </div>
+</div>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+<script src="./script.js"></script>
+</body>
+</html>
