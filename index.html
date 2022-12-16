@@ -52,8 +52,15 @@
 
         <div class="container-md">
             <h2>About</h2>
-            <p>We conducted a comprehensive study on the state of the art classical, machine learning, and deep learning based methods. We plan to evaluate the recent image compression methods based on diversified evaluation measures like compression ratio, the bit rate, and the peak signal-to-noise ratio, summarize their merits, and create hybrid approaches for specific design choices.
-            </p>
+        <p>
+            With the current abundance of image data on the internet and everywhere, compute efficient, highly compressive image compression algorithms are crucial. Applying such image compression algorithms to digital images would help to reduce storage cost and network bandwidth required to transmit them. We conducted a comprehensive study on the state-of-the-art classical, learning-based methods. We evaluated these methods based on diversified evaluation measures like compression ratio, the bit rate, and the peak signal-to-noise ratio, summarize their merits, and tried hybrid approaches for specific design choices.
+        </p>
+        </div>
+        <hr/>
+        <div class="container-md">
+            <h2>Motivation</h2>
+        <p>
+            Current state-of-the-art classical algorithms take advantage of visual perception and the statistical properties of image data. Learning-based strategies, on the other hand, aim to directly learn an end-to-end mapping between the input and the output of the compression process. While the potential of learning-based image compression has been shown in recent years, the computational efficiency and memory requirements of these methods have been a limiting factor in their practicality. Learning-based strategies, on the other hand, aim to directly learn an end-to-end mapping between the input and the output of the compression process. While the potential of learning-based image compression has been shown in recent years, the computational efficiency and memory requirements of these methods have been a limiting factor in their practicality. Recently, Latent diffusion models [6] and GAN-based models have emerged as a promising approach for learning-based image compression. Currently, JPEG and PNG are the two most widely used classic compression methods for images. On the other hand, even while learning-based algorithms exhibit good compression results, it is unclear which image domains they can replace traditional ones in. Hence, we created a benchmark of various image compression methods and presented different use cases of images where certain algorithms outperformed others.        </p>
         </div>
         <hr/>
 
@@ -180,12 +187,67 @@
                 Reconstructions of HiFiC on all these datasets can be found here.</a></p>
         </div> -->
         <hr/>
+
+
         <div class="container-md">
-        <h2>Code</h2>
+            <h2>Implementation</h2>
+        <p>
+            In this compression benchmark, we implemented 5 broad approaches for compression: PNG, JPEG, K-means clustering, HiFiC (Conditional-GAN based compression), and Stable Diffusion (generative approach based on iterative denoising).
+            
+        </p>
+        <br>
+        <p>
+            <h5>PNG</h5> 
+            PNG is a lossless compression algorithm, which is broadly composed of delta encoding combined with LZ77 compression which consists of Huffman coding. We implemented PNG by performing a basic delta encoding per channel followed by ZLib compression on the concatenation of the output.
+
+        </p>
+        <br>
+        <p>
+            <h5>JPEG</h5> 
+            JPEG is a lossy compression algorithm, and is one of the most widely deployed compression codecs. JPEG is a pipeline composed broadly of the 4 steps:
+            <ol>
+                <li><strong>Color transform</strong> : Transforming the color space from RGB to YCbCr (Luma-chroma: Y- Luma, Cb, Cr - chroma). One small implementation detail in this component is the numerical overflow caused by the conversion from RGB to YCbCr and back, which can be avoided by clipping the output to the range [0, 255].
+                </li>
+                <li><strong>Discrete Cosine Transform(DCT)</strong> : This component transforms a block of pixels from the YCbCr value space to the frequency space through a Fourier transform(Cosine) of the block. DCT is generally applied on a block of 8 x 8 pixels (although this window is configurable).                </li>
+                <li><strong>Quantization</strong> : This is the only step in the pipeline which is a lossy one, which reduces coefficients of higher-frequency terms in the DCT to 0, with the assumption that humans are not sensitive to higher frequency content in images. The higher the quantization values, the higher number of coefficients are reduced to 0. The quantization is adaptive and can be controlled by a quality factor.                </li>
+                <li><strong>Huffman coding</strong> :  The DCT coefficients after quantization are compressed using RLE + Huffman coding (we use ZLib for compression). Higher amount of zeros present in the image lead to higher compression.               </li>
+            </ol>
+            In our implementation, we only subject the Y channel to DCT + quantization. For chroma channels (Cb, Cr), we perform bucketing, i.e., we represent the 8-bit value in 6-bits by bucketing 4 consecutive values in a bucket and replacing it with the bucket index instead.
+
+        </p>
+        <br>
+
+        <p>
+            <h5>HiFiC</h5> 
+            HiFiC (High Fidelity Generative Image Compression) is a compression method based on Conditional-GANs where the compression codec strikes a trade-off between rate, distortion and perception, and takes a generative approach to compression, where input is conditioned on the upsampled image to get the latent representation, and then the model generates the image from the latent representation. The latent representation is the compressed image, and this method achieves very high compression ratios (~150-200)/ low bitrates, with reconstructed images being perceptually similar. This method is a part of the tensorflow compression library, and we use the trained model weights for the codec.
+        </p>
+        <br>
+
+        <p>
+            <h5>Stable diffusion</h5> 
+            Stable diffusion is a recently published method for generating images from text/images. The architecture of Stable Diffusion consists of U-Net + Scheduler, which iteratively removes noise from the latent space representation of the image, which is then decoded by an autoencoder decoder. The latents are a compressed representation of the image. Stable Diffusion also produces highly compressed representations, although taking lot more time than classical algorithms like JPEG/PNG, etc.
+        </p>
+        <br>
+        <p>
+            <h5>Additional features</h5> 
+            We provide some features on top of the above mentioned codecs, like multi-core parallelization for all codecs and adaptive compression in JPEG to speed up runtimes, and we study variation in quality and compression performance. In addition to this, we also combine techniques for compression together and observe worse compression performance due to such stacking of techniques: for eg: for a lossless compression, applying RLE in PNG encoder after a delta encoding worsens the compression performance, and delta encoding after DCT + Quantization in JPEG worsens performance. With these experiments, we show that only certain combinations of transforms give good compression, and arbitrarily stacking up transforms might worsen compression performance considerably.
+        </p>
+        </div>
+        <hr/>
+        <div class="container-md">
+            <h2>Setup</h2>
+        <p>
+            We evaluate on the Image Compression Benchmark dataset, consisting of 15 images with a total size of 450 MB. We use the metrics of PSNR (Peak Signal to Noise Ratio) and SSIM (Structural Similarity) between original and reconstructed images for measuring the quality of the reconstructions. We also use compression ratios, bit rates (bits per pixel) for compression performance, and consider codec runtime (for encode + decode) as a performance axis.
+
+        </p>
+        </div>
+        <hr/>
+        <div class="container-md">
+        <!-- <h2>Code</h2>
         <p>Our implementation of these algorithm to evaluate them, and more details are available as part of the Image Compression repo at
             <a target="_blank" href="https://github.com/cs15b047/Image-Compression">
                 Image-Compression</a>. Explore our model implementations on your own images using the instructions given in the above link.</p>
-        <hr/>
+        <hr/> -->
             <h2>Results and Analysis</h2>
             <div class="outlined">
                 <div class="caption">
@@ -198,21 +260,7 @@
 
 
                     </p>
-                    <!-- <p>
-                        <strong>HiFiC</strong> is our method.
-                        <a href="http://papers.nips.cc/paper/8275-joint-autoregressive-and-hierarchical-priors-for-learned-image-compression.pdf">
-                            M&amp;S</a> is the deep-learning based <em>Mean &amp; Scale Hyperprior</em>,
-                        from Minnen et al.,
-                        optimized for mean squared error.
-                        <a href="https://en.wikipedia.org/wiki/Better_Portable_Graphics">BPG</a> is a non-learned codec based on H.265 that achieves
-                        very high PSNR.
-                        <strong>No GAN</strong> is our baseline, using the same architecture and distortion
-                        as HiFiC, but no GAN.
-                        Below each method, we show <em>average</em> bits per pixel (bpp) on the
-                        <a target="_blank" href="https://storage.googleapis.com/hific/userstudy/visualize.html?perPage=1">
-                            images from the user study</a>,
-                        and for learned methods we show the loss components.
-                    </p> -->
+                    
                     <img src="images/result1.png" class="img-figure rounded mx-auto d-block">
                     <img src="images/result2.png" class="img-figure rounded mx-auto d-block">
                     <p>
@@ -220,11 +268,102 @@
                         However, the classical algorithms are giving better PSNR and SSIM scores and are also faster than the learning based models. Under subjective evaluation,
                         of the learning based models, the image quality seems to be better than the classical algorithms. This also shows PSNR and SSIM are not good indicator metrics of quality for generative methods, as they have lower scores even though the images are better.
                     </p>
+                    <hr/>
+                    <div class="container-md">
+                        <h5>Stable Diffusion results</h5>
+                        <strong>Text hallucination</strong>
+                        <img src="images/text_hal.png" class="img-figure rounded mx-auto d-block" >
+                        <p>The following image shows the results of stable diffusion on images with texts in small as well as large font sizes. Similar, text hallucination can be observed from the deck of the images in the demo for stable diffusion</p>                        
+                        <br>
+                        <strong>Quality loss for smaller objects in images</strong>
+                        <img src="images/hal3.png" class="img-figure rounded mx-auto d-block">
+                        <p>There is significant loss in quality when it comes to small objects in images like face features, flower stigma, etc. The image below gives comparison between original (left) and compressed (right) images.</p>
+                    </div>
+                    <hr/>
+                    <div class="container-md">
+                        <h5>Quality comparison</h5>
+                        <strong></strong>
+                        <img src="images/allresults.png" class="img-figure rounded mx-auto d-block" >
+                        <p>JPEG at lower quality produces ringing artifacts, as seen in the background of the flower image. PNG, K-Means (without downsampling), and JPEG (with quality 100) are lossless and are equivalent to the original image. HiFiC and Stable diffusion produce high quality reconstructions for natural images. But, they are not able to encode and reconstruct faces, while Stable  Diffusion can’t encode + reconstruct text in images even in a large enough font.
+                        </p>                        
+                        
+                    </div>
+                    <!-- <img src="images/text_hal.png" class="img-figure rounded mx-auto d-block">
+                    <img src="images/text_hal1.png" class="img-figure rounded mx-auto d-block">
+                    <img src="images/text_hal2.png" class="img-figure rounded mx-auto d-block">
+                    <img src="images/hal1.png" class="img-figure rounded mx-auto d-block"> -->
                 </div>
             </div>
             <hr/>
-            
-            <hr/>
+        </div>
+        <div class="container-md">
+            <h2>Discussion</h2>
+            <p>The following table shows different points in the space of algorithms corresponding to the metrics we defined above and algorithms that fit into these profiles.
+            </p>
+            <!-- create table like structure -->
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">Profiles</th>
+                            <th scope="col">Algorithms</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <ul>
+                                    <li>High compression ratios (~150-200)</li>
+                                    <li>Good quality</li>
+                                    <li>High runtime (or require GPUs - higher cost</li>
+                                </ul>
+                                </ul>
+
+                            </td>
+                            <td>
+                                <ul>
+                                    <li>HiFiC</li>
+                                    <li>Stable Diffusion</li>
+                                </ul>
+                                
+                            </td>
+                            
+                        </tr>
+                        <tr>
+                            <!-- <th scope="row">PNG</th> -->
+                            <td>
+                                <ul>
+                                    <li>Medium compression ratios</li>
+                                    <li>Medium/High quality</li>
+                                    <li>Fast encode/decode</li>
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li>K-means (with downsampling)</li>
+                                    <li>JPEG (variable quality factor)</li>
+                                </ul>
+                            </td>
+                            
+                        </tr>
+                        <tr>
+                            <td>
+                                <ul>
+                                    <li>High degree of fidelity to the original image.</li>
+                                    <li>Fast codec runtime</li>
+                                </ul>
+                            </td>
+                            
+                            <td><ul>
+                                <li>PNG</li>
+                            </ul></td>
+                            
+                        </tr>
+
+                    </tbody>
+                </table>
+        <p>
+        </p>
         </div>
     </div>
 </div>
